@@ -35,9 +35,10 @@ function play() {
 	var correct = 0;
 	var i;
 	var startTime = new Date().getTime();
-	/* Spilar tíu leiki */
+	/* Spyr 10 spurninga */
 	for(i = 0; i < 10; i++) {
 		var answer = ask();
+		/*  */
 		if(answer == null) {
 			alert('Hætt í leik');
 			break;
