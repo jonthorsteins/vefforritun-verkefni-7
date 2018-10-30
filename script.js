@@ -14,7 +14,9 @@ const GAMES_TO_PLAY = 10;
  */
 function start() {
 	alert('Markmiðið er að svara eins mörgum af 10 dæmum rétt eins hratt og mögulegt er.');
+	do {
 	play();
+    } while(confirm('Spila annan leik?'))
 }
   	
 
@@ -30,25 +32,24 @@ function start() {
  *
  */
 function play() {
-	do {
-		var correct = 0;
-		var i;
-		var startTime = new Date().getTime();
-		for(i = 0; i < 10; i++) {
-			var answer = ask();
-			if(answer == null) {
-				alert('Hætt í leik');
-				break;
-			}
-			if(answer) {
-				correct++;
-			}
+	var correct = 0;
+	var i;
+	var startTime = new Date().getTime();
+	/* Spilar tíu leiki */
+	for(i = 0; i < 10; i++) {
+		var answer = ask();
+		if(answer == null) {
+			alert('Hætt í leik');
+			break;
 		}
-		var endTime = new Date().getTime();
-		if (i == 10) {
-			showResult(startTime, endTime, correct);
-		} 
-	} while (confirm('Spila annan leik?'));
+		if(answer) {
+			correct++;
+		}
+	}
+	var endTime = new Date().getTime();
+	if (i == 10) {
+		showResult(startTime, endTime, correct);
+	} 
 
 }
 
@@ -73,6 +74,7 @@ function ask() {
 	var secondNumber;
 	var operator = randomNumber(0, 3);
 	
+	/* Plús */
 	if (operator == 0) {
 		firstNumber = randomNumber(1, 100);
 		secondNumber = randomNumber(1, 100);
@@ -83,6 +85,7 @@ function ask() {
 		return (parseInt(answer) == (firstNumber + secondNumber));
 	}
 
+	/* Mínus */
 	if (operator == 1) {
 		firstNumber = randomNumber(1, 100);
 		secondNumber = randomNumber(1, 100);
@@ -94,6 +97,7 @@ function ask() {
 		return (parseInt(answer) == (firstNumber - secondNumber));
 	}
 
+	/* Margföldun */
 	if (operator == 2) {
 		firstNumber = randomNumber(1, 10);
 		secondNumber = randomNumber(1, 10);
@@ -105,6 +109,7 @@ function ask() {
 		return (parseInt(answer) == (firstNumber * secondNumber));	
 	}
 
+	/* Deiling */
 	if (operator == 3) {
 		secondNumber = randomNumber(2, 10);
 		firstNumber = randomNumber(2, 10) * secondNumber;
@@ -118,6 +123,9 @@ function ask() {
 
 }
 
+/**
+* Birtir fjölda réttra svara og tíma fyrir leikinn.
+*/
 function showResult(startTime, endTime, correct) {
 	var time = (endTime - startTime)/1000;
 	alert('Þú svaraðir ' + correct + ' af 10 dæmum rétt á ' + time.toFixed(2) + ' sekúndum\nMeðalrétt svör á sekúndu eru ' + (correct/time).toFixed(2));
