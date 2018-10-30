@@ -13,10 +13,12 @@ const GAMES_TO_PLAY = 10;
  * Eftir leik er notanda boðið að spila annan leik, ef ekki hættir forrit.
  */
 function start() {
-  villa;
+	alert('Markmiðið er að svara eins mörgum af 10 dæmum rétt eins hratt og mögulegt er.');
+	play();
 }
+  	
 
-/**
+ /**
  * Spilar einn leik. Heldur utan um hvenær leikur byrjaði, hvenær endar og
  * fjölda réttra svara. Eftir leik eru birtar upplýsingar um niðurstöðu:
  *   Þú svaraðir X af 10 dæmum rétt á Y sekúndum
@@ -28,11 +30,31 @@ function start() {
  *
  */
 function play() {
+	do {
+		var correct = 0;
+		var i;
+		var startTime = new Date().getTime();
+		for(i = 0; i < 10; i++) {
+			var answer = ask();
+			if(answer == null) {
+				alert('Hætt í leik');
+				break;
+			}
+			if(answer) {
+				correct++;
+			}
+		}
+		var endTime = new Date().getTime();
+		if (i == 10) {
+			showResult(startTime, endTime, correct);
+		} 
+	} while (confirm('Spila annan leik?'));
+
 }
 
 /**
  * Spyr einnar spurningar og skilar upplýsingum um svar (mögulega með því að
- * nota true, false og null ef notandi hættir). Birtir notanda propmpt til að
+ * nota true, false og null ef notandi hættir). Birtir notanda prompt til að
  * svara í og túlkar svarið yfir í tölu.
  *
  * Mögulegar spurningar eru:
@@ -45,6 +67,60 @@ function play() {
  * Sniðugt væri að færa það að búa til spurningu í nýtt fall sem ask() kallar í.
  */
 function ask() {
+	
+	var question = "Hvað er ";
+	var firstNumber;
+	var secondNumber;
+	var operator = randomNumber(0, 3);
+	
+	if (operator == 0) {
+		firstNumber = randomNumber(1, 100);
+		secondNumber = randomNumber(1, 100);
+		var answer = prompt(question + firstNumber + " + " + secondNumber + "?");
+		if(answer == null) {
+			return null;
+		}
+		return (parseInt(answer) == (firstNumber + secondNumber));
+	}
+
+	if (operator == 1) {
+		firstNumber = randomNumber(1, 100);
+		secondNumber = randomNumber(1, 100);
+
+		var answer = prompt(question + firstNumber + " - " + secondNumber + "?");
+		if(answer == null) {
+			return null;
+		}
+		return (parseInt(answer) == (firstNumber - secondNumber));
+	}
+
+	if (operator == 2) {
+		firstNumber = randomNumber(1, 10);
+		secondNumber = randomNumber(1, 10);
+
+		var answer = prompt(question + firstNumber + " * " + secondNumber + "?");
+		if(answer == null) {
+			return null;
+		}
+		return (parseInt(answer) == (firstNumber * secondNumber));	
+	}
+
+	if (operator == 3) {
+		secondNumber = randomNumber(2, 10);
+		firstNumber = randomNumber(2, 10) * secondNumber;
+
+		var answer = prompt(question + firstNumber + " / " + secondNumber + "?");
+		if(answer == null) {
+			return null;
+		}
+		return (parseInt(answer) == (firstNumber / secondNumber));
+	}
+
+}
+
+function showResult(startTime, endTime, correct) {
+	var time = (endTime - startTime)/1000;
+	alert('Þú svaraðir ' + correct + ' af 10 dæmum rétt á ' + time.toFixed(2) + ' sekúndum\nMeðalrétt svör á sekúndu eru ' + (correct/time).toFixed(2));
 }
 
 /**
